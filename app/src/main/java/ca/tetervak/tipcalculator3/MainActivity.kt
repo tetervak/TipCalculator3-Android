@@ -70,7 +70,7 @@ fun CalculatorScreen() {
         mutableStateOf(true)
     }
 
-    val serviceCostInput: MutableState<String> = remember {
+    val serviceCost: MutableState<String> = remember {
         mutableStateOf("")
     }
 
@@ -79,7 +79,7 @@ fun CalculatorScreen() {
     }
 
     val tipData: TipData = calculateTip(
-        serviceCost = serviceCostInput.value.toDoubleOrNull() ?: 0.0,
+        serviceCost = serviceCost.value.toDoubleOrNull() ?: 0.0,
         serviceQuality = serviceQualityInput.value,
         roundUpTip = roundUpTip.value
     )
@@ -98,7 +98,7 @@ fun CalculatorScreen() {
         )
         CalculatorInputs(
             roundUpTip.value, { roundUpTip.value = it },
-            serviceCostInput.value, { serviceCostInput.value = it },
+            serviceCost.value, { serviceCost.value = it },
             serviceQualityInput.value, { serviceQualityInput.value = it}
         )
         CalculatorOutputs(tipAmount = tipData.tipAmount, billTotal = tipData.billTotal)
@@ -157,7 +157,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 @Composable
 fun CalculatorInputs(
     roundUpTip: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
-    serviceCostInput: String, onChangeOfserviceCost: (String) -> Unit,
+    serviceCost: String, onChangeOfserviceCost: (String) -> Unit,
     serviceQualityInput: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
 ) {
     Card(
@@ -165,7 +165,7 @@ fun CalculatorInputs(
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            ServiceCostInput(serviceCostInput, onChangeOfserviceCost)
+            ServiceCostInput(serviceCost, onChangeOfserviceCost)
             ServiceQualityInput(serviceQualityInput, onChangeOfServiceQuality)
             RoundUpTipInput(roundUpTip, onChangeOfRoundUpTip)
         }
