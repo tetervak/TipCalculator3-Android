@@ -37,22 +37,22 @@ import androidx.compose.ui.unit.sp
 import ca.tetervak.tipcalculator3.model.ServiceQuality
 import ca.tetervak.tipcalculator3.model.TipData
 import ca.tetervak.tipcalculator3.model.calculateTip
-import ca.tetervak.tipcalculator3.ui.theme.TipCalculator3Theme
+import ca.tetervak.tipcalculator3.ui.theme.TipCalculatorTheme
 import java.text.NumberFormat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TipCalculator3App()
+            TipCalculatorApp()
         }
     }
 }
 
 @Preview
 @Composable
-fun TipCalculator3App() {
-    TipCalculator3Theme {
+fun TipCalculatorApp() {
+    TipCalculatorTheme {
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier.fillMaxSize(),
