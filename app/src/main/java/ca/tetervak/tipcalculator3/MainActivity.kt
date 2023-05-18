@@ -95,9 +95,12 @@ fun CalculatorScreen() {
             color = colorResource(id = R.color.pink_500)
         )
         CalculatorInputs(
-            roundUpTip.value, { roundUpTip.value = it },
-            serviceCost.value, { serviceCost.value = it },
-            serviceQuality.value, { serviceQuality.value = it }
+            roundUpTip = roundUpTip.value,
+            onChangeOfRoundUpTip = { roundUpTip.value = it },
+            serviceCost = serviceCost.value,
+            onChangeOfServiceCost = { serviceCost.value = it },
+            serviceQuality = serviceQuality.value,
+            onChangeOfServiceQuality = { serviceQuality.value = it }
         )
         CalculatorOutputs(tipAmount = tipData.tipAmount, billTotal = tipData.billTotal)
     }
@@ -125,7 +128,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
                         .wrapContentWidth(align = Alignment.End)
                 )
                 Text(
-                    text = formatCurrency(tipAmount),
+                    text = formatCurrency(amount = tipAmount),
                     fontSize = 20.sp,
                     color = colorResource(id = R.color.purple_500)
                 )
@@ -142,7 +145,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
                         .wrapContentWidth(align = Alignment.End)
                 )
                 Text(
-                    text = formatCurrency(billTotal),
+                    text = formatCurrency(amount = billTotal),
                     fontSize = 20.sp,
                     color = colorResource(id = R.color.purple_500)
                 )
@@ -163,9 +166,18 @@ fun CalculatorInputs(
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            ServiceCostInput(serviceCost, onChangeOfServiceCost)
-            ServiceQualityInput(serviceQuality, onChangeOfServiceQuality)
-            RoundUpTipInput(roundUpTip, onChangeOfRoundUpTip)
+            ServiceCostInput(
+                serviceCost = serviceCost,
+                onChange = onChangeOfServiceCost
+            )
+            ServiceQualityInput(
+                serviceQuality = serviceQuality,
+                onChange = onChangeOfServiceQuality
+            )
+            RoundUpTipInput(
+                roundUpTip = roundUpTip,
+                onChange = onChangeOfRoundUpTip
+            )
         }
 
     }
