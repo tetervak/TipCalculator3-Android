@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -22,9 +21,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -34,8 +30,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ca.tetervak.tipcalculator3.model.ServiceQuality
-import ca.tetervak.tipcalculator3.model.calculateTip
 import ca.tetervak.tipcalculator3.ui.theme.TipCalculatorTheme
 import java.text.NumberFormat
 
@@ -65,28 +59,6 @@ fun TipCalculatorApp() {
 @Composable
 fun CalculatorScreen() {
 
-    val roundUpTip: MutableState<Boolean> = remember {
-        mutableStateOf(true)
-    }
-
-    val serviceCost: MutableState<String> = remember {
-        mutableStateOf("")
-    }
-
-    val serviceQuality: MutableState<ServiceQuality> = remember {
-        mutableStateOf(ServiceQuality.GOOD)
-    }
-
-
-    val billBeforeTip = serviceCost.value.toDoubleOrNull() ?: 0.0
-    val tipAmount = calculateTip(
-        billBeforeTip = billBeforeTip,
-        serviceQuality = serviceQuality.value,
-        roundUpTip = roundUpTip.value
-    )
-
-    val billTotal = billBeforeTip + tipAmount;
-
     Column(
         modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(32.dp),
@@ -97,24 +69,16 @@ fun CalculatorScreen() {
             fontSize = 24.sp,
             color = colorResource(id = R.color.pink_500)
         )
-        CalculatorInputs(
-            roundUpTip = roundUpTip.value,
-            onChangeOfRoundUpTip = { roundUpTip.value = it },
-            serviceCost = serviceCost.value,
-            onChangeOfServiceCost = { serviceCost.value = it },
-            serviceQuality = serviceQuality.value,
-            onChangeOfServiceQuality = { serviceQuality.value = it }
-        )
-        CalculatorOutputs(tipAmount = tipAmount, billTotal = billTotal)
+        CalculatorInputs()
+        CalculatorOutputs()
     }
 }
 
 fun formatCurrency(amount: Double): String =
     NumberFormat.getCurrencyInstance().format(amount)
 
-
 @Composable
-fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
+fun CalculatorOutputs() {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(8.dp)
@@ -131,7 +95,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
                         .wrapContentWidth(align = Alignment.End)
                 )
                 Text(
-                    text = formatCurrency(amount = tipAmount),
+                    text = "0.0",
                     fontSize = 20.sp,
                     color = colorResource(id = R.color.purple_500)
                 )
@@ -148,7 +112,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
                         .wrapContentWidth(align = Alignment.End)
                 )
                 Text(
-                    text = formatCurrency(amount = billTotal),
+                    text = "0.0",
                     fontSize = 20.sp,
                     color = colorResource(id = R.color.purple_500)
                 )
@@ -159,35 +123,22 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 }
 
 @Composable
-fun CalculatorInputs(
-    roundUpTip: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
-    serviceCost: String, onChangeOfServiceCost: (String) -> Unit,
-    serviceQuality: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
-) {
+fun CalculatorInputs() {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            ServiceCostInput(
-                serviceCost = serviceCost,
-                onChange = onChangeOfServiceCost
-            )
-            ServiceQualityInput(
-                serviceQuality = serviceQuality,
-                onChange = onChangeOfServiceQuality
-            )
-            RoundUpTipInput(
-                roundUpTip = roundUpTip,
-                onChange = onChangeOfRoundUpTip
-            )
+            ServiceCostInput()
+            ServiceQualityInput()
+            RoundUpTipInput()
         }
 
     }
 }
 
 @Composable
-fun RoundUpTipInput(roundUpTip: Boolean, onChange: (Boolean) -> Unit) {
+fun RoundUpTipInput() {
 
     Row(
         modifier = Modifier.padding(16.dp),
@@ -199,14 +150,14 @@ fun RoundUpTipInput(roundUpTip: Boolean, onChange: (Boolean) -> Unit) {
             fontSize = 20.sp
         )
         Switch(
-            checked = roundUpTip,
-            onCheckedChange = onChange,
+            checked = true,
+            onCheckedChange = {},
         )
     }
 }
 
 @Composable
-fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQuality) -> Unit) {
+fun ServiceQualityInput() {
     Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp)) {
         Text(
             text = stringResource(R.string.service_quality_input_label),
@@ -214,8 +165,8 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQuality == ServiceQuality.AMAZING,
-                onClick = { onChange(ServiceQuality.AMAZING) }
+                selected = false,
+                onClick = {}
             )
             Text(
                 text = stringResource(id = R.string.quality_amazing_label),
@@ -224,8 +175,8 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQuality == ServiceQuality.GOOD,
-                onClick = { onChange(ServiceQuality.GOOD) }
+                selected = true,
+                onClick = {}
             )
             Text(
                 text = stringResource(id = R.string.quality_good_label),
@@ -234,8 +185,8 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQuality == ServiceQuality.OK,
-                onClick = { onChange(ServiceQuality.OK) }
+                selected = false,
+                onClick = {}
             )
             Text(
                 text = stringResource(id = R.string.quality_okay_label),
@@ -245,13 +196,12 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServiceCostInput(serviceCost: String, onChange: (String) -> Unit) {
+fun ServiceCostInput() {
     TextField(
         label = { Text(text = stringResource(id = R.string.service_cost_label)) },
-        value = serviceCost,
-        onValueChange = onChange,
+        value = "",
+        onValueChange = {},
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
         textStyle = TextStyle.Default.copy(
