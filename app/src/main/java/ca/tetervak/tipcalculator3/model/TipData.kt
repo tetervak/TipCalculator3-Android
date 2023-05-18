@@ -3,7 +3,7 @@ package ca.tetervak.tipcalculator3.model
 import java.util.*
 
 data class TipData (
-    val costOfService: Double,
+    val serviceCost: Double,
     val serviceQuality: ServiceQuality,
     val roundUpTip: Boolean,
     val tipAmount: Double,

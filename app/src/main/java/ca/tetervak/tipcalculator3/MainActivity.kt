@@ -70,7 +70,7 @@ fun CalculatorScreen() {
         mutableStateOf(true)
     }
 
-    val costOfServiceInput: MutableState<String> = remember {
+    val serviceCostInput: MutableState<String> = remember {
         mutableStateOf("")
     }
 
@@ -79,7 +79,7 @@ fun CalculatorScreen() {
     }
 
     val tipData: TipData = calculateTip(
-        costOfService = costOfServiceInput.value.toDoubleOrNull() ?: 0.0,
+        serviceCost = serviceCostInput.value.toDoubleOrNull() ?: 0.0,
         serviceQuality = serviceQualityInput.value,
         roundUpTip = roundUpTipInput.value
     )
@@ -98,7 +98,7 @@ fun CalculatorScreen() {
         )
         CalculatorInputs(
             roundUpTipInput.value, { roundUpTipInput.value = it },
-            costOfServiceInput.value, { costOfServiceInput.value = it },
+            serviceCostInput.value, { serviceCostInput.value = it },
             serviceQualityInput.value, { serviceQualityInput.value = it}
         )
         CalculatorOutputs(tipAmount = tipData.tipAmount, billTotal = tipData.billTotal)
@@ -157,7 +157,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 @Composable
 fun CalculatorInputs(
     roundUpTipInput: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
-    costOfServiceInput: String, onChangeOfCostOfService: (String) -> Unit,
+    serviceCostInput: String, onChangeOfserviceCost: (String) -> Unit,
     serviceQualityInput: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
 ) {
     Card(
@@ -165,7 +165,7 @@ fun CalculatorInputs(
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            CostOfServiceInput(costOfServiceInput, onChangeOfCostOfService)
+            ServiceCostInput(serviceCostInput, onChangeOfserviceCost)
             ServiceQualityInput(serviceQualityInput, onChangeOfServiceQuality)
             RoundUpTipInput(roundUpTipInput, onChangeOfRoundUpTip)
         }
@@ -234,10 +234,10 @@ fun ServiceQualityInput(serviceQualityInput: ServiceQuality, onChange: (ServiceQ
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CostOfServiceInput(costOfService: String, onChange: (String) -> Unit) {
+fun ServiceCostInput(serviceCost: String, onChange: (String) -> Unit) {
     TextField(
-        label = { Text(text = stringResource(id = R.string.cost_of_service_label)) },
-        value = costOfService,
+        label = { Text(text = stringResource(id = R.string.service_cost_label)) },
+        value = serviceCost,
         onValueChange = onChange,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
