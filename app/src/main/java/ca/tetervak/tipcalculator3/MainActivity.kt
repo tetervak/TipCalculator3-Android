@@ -66,7 +66,7 @@ fun TipCalculator3App() {
 @Composable
 fun CalculatorScreen() {
 
-    val roundUpTipInput: MutableState<Boolean> = remember {
+    val roundUpTip: MutableState<Boolean> = remember {
         mutableStateOf(true)
     }
 
@@ -81,7 +81,7 @@ fun CalculatorScreen() {
     val tipData: TipData = calculateTip(
         serviceCost = serviceCostInput.value.toDoubleOrNull() ?: 0.0,
         serviceQuality = serviceQualityInput.value,
-        roundUpTip = roundUpTipInput.value
+        roundUpTip = roundUpTip.value
     )
 
     Column(
@@ -97,7 +97,7 @@ fun CalculatorScreen() {
             color = colorResource(id = R.color.pink_500)
         )
         CalculatorInputs(
-            roundUpTipInput.value, { roundUpTipInput.value = it },
+            roundUpTip.value, { roundUpTip.value = it },
             serviceCostInput.value, { serviceCostInput.value = it },
             serviceQualityInput.value, { serviceQualityInput.value = it}
         )
@@ -156,7 +156,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 
 @Composable
 fun CalculatorInputs(
-    roundUpTipInput: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
+    roundUpTip: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
     serviceCostInput: String, onChangeOfserviceCost: (String) -> Unit,
     serviceQualityInput: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
 ) {
@@ -167,14 +167,14 @@ fun CalculatorInputs(
         Column {
             ServiceCostInput(serviceCostInput, onChangeOfserviceCost)
             ServiceQualityInput(serviceQualityInput, onChangeOfServiceQuality)
-            RoundUpTipInput(roundUpTipInput, onChangeOfRoundUpTip)
+            RoundUpTipInput(roundUpTip, onChangeOfRoundUpTip)
         }
 
     }
 }
 
 @Composable
-fun RoundUpTipInput(roundUpTipInput: Boolean, onChange: (Boolean) -> Unit) {
+fun RoundUpTipInput(roundUpTip: Boolean, onChange: (Boolean) -> Unit) {
 
     Row(
         modifier = Modifier.padding(16.dp),
@@ -186,7 +186,7 @@ fun RoundUpTipInput(roundUpTipInput: Boolean, onChange: (Boolean) -> Unit) {
             fontSize = 20.sp
         )
         Switch(
-            checked = roundUpTipInput,
+            checked = roundUpTip,
             onCheckedChange = onChange,
         )
     }
