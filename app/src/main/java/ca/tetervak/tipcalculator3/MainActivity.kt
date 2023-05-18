@@ -74,13 +74,13 @@ fun CalculatorScreen() {
         mutableStateOf("")
     }
 
-    val serviceQualityInput: MutableState<ServiceQuality> = remember {
+    val serviceQuality: MutableState<ServiceQuality> = remember {
         mutableStateOf(ServiceQuality.GOOD)
     }
 
     val tipData: TipData = calculateTip(
         serviceCost = serviceCost.value.toDoubleOrNull() ?: 0.0,
-        serviceQuality = serviceQualityInput.value,
+        serviceQuality = serviceQuality.value,
         roundUpTip = roundUpTip.value
     )
 
@@ -99,7 +99,7 @@ fun CalculatorScreen() {
         CalculatorInputs(
             roundUpTip.value, { roundUpTip.value = it },
             serviceCost.value, { serviceCost.value = it },
-            serviceQualityInput.value, { serviceQualityInput.value = it}
+            serviceQuality.value, { serviceQuality.value = it}
         )
         CalculatorOutputs(tipAmount = tipData.tipAmount, billTotal = tipData.billTotal)
     }
@@ -158,7 +158,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 fun CalculatorInputs(
     roundUpTip: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
     serviceCost: String, onChangeOfserviceCost: (String) -> Unit,
-    serviceQualityInput: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
+    serviceQuality: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -166,7 +166,7 @@ fun CalculatorInputs(
     ) {
         Column {
             ServiceCostInput(serviceCost, onChangeOfserviceCost)
-            ServiceQualityInput(serviceQualityInput, onChangeOfServiceQuality)
+            ServiceQualityInput(serviceQuality, onChangeOfServiceQuality)
             RoundUpTipInput(roundUpTip, onChangeOfRoundUpTip)
         }
 
@@ -193,7 +193,7 @@ fun RoundUpTipInput(roundUpTip: Boolean, onChange: (Boolean) -> Unit) {
 }
 
 @Composable
-fun ServiceQualityInput(serviceQualityInput: ServiceQuality, onChange: (ServiceQuality) -> Unit) {
+fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQuality) -> Unit) {
     Column(modifier = Modifier.padding(start = 16.dp, top = 16.dp)) {
         Text(
             text = stringResource(R.string.service_quality_input_label),
@@ -201,7 +201,7 @@ fun ServiceQualityInput(serviceQualityInput: ServiceQuality, onChange: (ServiceQ
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQualityInput == ServiceQuality.AMAZING,
+                selected = serviceQuality == ServiceQuality.AMAZING,
                 onClick = { onChange(ServiceQuality.AMAZING)}
             )
             Text(
@@ -211,7 +211,7 @@ fun ServiceQualityInput(serviceQualityInput: ServiceQuality, onChange: (ServiceQ
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQualityInput == ServiceQuality.GOOD,
+                selected = serviceQuality == ServiceQuality.GOOD,
                 onClick = { onChange(ServiceQuality.GOOD)}
             )
             Text(
@@ -221,7 +221,7 @@ fun ServiceQualityInput(serviceQualityInput: ServiceQuality, onChange: (ServiceQ
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = serviceQualityInput == ServiceQuality.OK,
+                selected = serviceQuality == ServiceQuality.OK,
                 onClick = { onChange(ServiceQuality.OK)}
             )
             Text(
