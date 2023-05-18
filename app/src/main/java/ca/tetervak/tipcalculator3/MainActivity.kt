@@ -157,7 +157,7 @@ fun CalculatorOutputs(tipAmount: Double, billTotal: Double) {
 @Composable
 fun CalculatorInputs(
     roundUpTip: Boolean, onChangeOfRoundUpTip: (Boolean) -> Unit,
-    serviceCost: String, onChangeOfserviceCost: (String) -> Unit,
+    serviceCost: String, onChangeOfServiceCost: (String) -> Unit,
     serviceQuality: ServiceQuality, onChangeOfServiceQuality: (ServiceQuality) -> Unit
 ) {
     Card(
@@ -165,7 +165,7 @@ fun CalculatorInputs(
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            ServiceCostInput(serviceCost, onChangeOfserviceCost)
+            ServiceCostInput(serviceCost, onChangeOfServiceCost)
             ServiceQualityInput(serviceQuality, onChangeOfServiceQuality)
             RoundUpTipInput(roundUpTip, onChangeOfRoundUpTip)
         }
