@@ -85,9 +85,7 @@ fun CalculatorScreen() {
     )
 
     Column(
-        modifier = Modifier
-            //.fillMaxSize()
-            .padding(32.dp),
+        modifier = Modifier.padding(32.dp),
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
