@@ -99,7 +99,7 @@ fun CalculatorScreen() {
         CalculatorInputs(
             roundUpTip.value, { roundUpTip.value = it },
             serviceCost.value, { serviceCost.value = it },
-            serviceQuality.value, { serviceQuality.value = it}
+            serviceQuality.value, { serviceQuality.value = it }
         )
         CalculatorOutputs(tipAmount = tipData.tipAmount, billTotal = tipData.billTotal)
     }
@@ -202,7 +202,7 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
                 selected = serviceQuality == ServiceQuality.AMAZING,
-                onClick = { onChange(ServiceQuality.AMAZING)}
+                onClick = { onChange(ServiceQuality.AMAZING) }
             )
             Text(
                 text = stringResource(id = R.string.quality_amazing_label),
@@ -212,7 +212,7 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
                 selected = serviceQuality == ServiceQuality.GOOD,
-                onClick = { onChange(ServiceQuality.GOOD)}
+                onClick = { onChange(ServiceQuality.GOOD) }
             )
             Text(
                 text = stringResource(id = R.string.quality_good_label),
@@ -222,7 +222,7 @@ fun ServiceQualityInput(serviceQuality: ServiceQuality, onChange: (ServiceQualit
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
                 selected = serviceQuality == ServiceQuality.OK,
-                onClick = { onChange(ServiceQuality.OK)}
+                onClick = { onChange(ServiceQuality.OK) }
             )
             Text(
                 text = stringResource(id = R.string.quality_okay_label),
