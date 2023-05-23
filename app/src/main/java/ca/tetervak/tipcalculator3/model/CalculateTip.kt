@@ -4,12 +4,12 @@ fun calculateTip(
     serviceCost: Double,
     serviceQuality: ServiceQuality = ServiceQuality.OK,
     roundUpTip: Boolean = true
-): TipData {
+): CalculatorUiState {
     var tipAmount = serviceCost * tipPercentage(serviceQuality)
     if (roundUpTip) {
         tipAmount = kotlin.math.ceil(tipAmount)
     }
-    return TipData(
+    return CalculatorUiState(
         serviceCost = serviceCost,
         serviceQuality = serviceQuality,
         roundUpTip = roundUpTip,

@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ca.tetervak.tipcalculator3.model.ServiceQuality
-import ca.tetervak.tipcalculator3.model.TipData
+import ca.tetervak.tipcalculator3.model.CalculatorUiState
 import ca.tetervak.tipcalculator3.model.calculateTip
 import ca.tetervak.tipcalculator3.ui.theme.TipCalculatorTheme
 import java.text.NumberFormat
@@ -78,7 +78,7 @@ fun CalculatorScreen() {
         mutableStateOf(ServiceQuality.GOOD)
     }
 
-    val tipData: TipData = calculateTip(
+    val tipData: CalculatorUiState = calculateTip(
         serviceCost = serviceCost.value.toDoubleOrNull() ?: 0.0,
         serviceQuality = serviceQuality.value,
         roundUpTip = roundUpTip.value

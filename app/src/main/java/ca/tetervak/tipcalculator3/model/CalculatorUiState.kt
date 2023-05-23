@@ -1,13 +1,9 @@
 package ca.tetervak.tipcalculator3.model
 
-import java.util.*
-
-data class TipData (
+data class CalculatorUiState (
     val serviceCost: Double,
     val serviceQuality: ServiceQuality,
     val roundUpTip: Boolean,
     val tipAmount: Double,
-    val billTotal: Double,
-    val date: Date = Date(),
-    val id: Int = 0,
+    val billTotal: Double
 )
