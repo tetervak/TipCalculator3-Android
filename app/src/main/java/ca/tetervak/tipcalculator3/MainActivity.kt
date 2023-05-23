@@ -23,9 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -35,8 +32,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.tetervak.tipcalculator3.model.ServiceQuality
-import ca.tetervak.tipcalculator3.model.calculateTip
 import ca.tetervak.tipcalculator3.ui.theme.TipCalculatorTheme
 import java.text.NumberFormat
 
@@ -66,27 +63,9 @@ fun TipCalculatorApp() {
 @Composable
 fun CalculatorScreen() {
 
-    var roundUpTip: Boolean by remember {
-        mutableStateOf(true)
-    }
+    val viewModel: MainViewModel = viewModel()
 
-    var serviceCost: String by remember {
-        mutableStateOf("")
-    }
-
-    var serviceQuality: ServiceQuality by remember {
-        mutableStateOf(ServiceQuality.GOOD)
-    }
-
-
-    val billBeforeTip = serviceCost.toDoubleOrNull() ?: 0.0
-    val tipAmount = calculateTip(
-        billBeforeTip = billBeforeTip,
-        serviceQuality = serviceQuality,
-        roundUpTip = roundUpTip
-    )
-
-    val billTotal = billBeforeTip + tipAmount
+    val uiState: CalculatorUiState by viewModel.calculatorUiState
 
     Column(
         modifier = Modifier.padding(32.dp),
@@ -99,14 +78,14 @@ fun CalculatorScreen() {
             color = colorResource(id = R.color.pink_500)
         )
         CalculatorInputs(
-            roundUpTip = roundUpTip,
-            onChangeOfRoundUpTip = { roundUpTip = it },
-            serviceCost = serviceCost,
-            onChangeOfServiceCost = { serviceCost = it },
-            serviceQuality = serviceQuality,
-            onChangeOfServiceQuality = { serviceQuality = it }
+            roundUpTip = uiState.roundUpTip,
+            onChangeOfRoundUpTip = { viewModel.updateRoundUpTip(it) },
+            serviceCost = uiState.serviceCost,
+            onChangeOfServiceCost = { viewModel.updateServiceCost(it) },
+            serviceQuality = uiState.serviceQuality,
+            onChangeOfServiceQuality = { viewModel.updateServiceQuality(it) }
         )
-        CalculatorOutputs(tipAmount = tipAmount, billTotal = billTotal)
+        CalculatorOutputs(uiState.tipAmount, billTotal = uiState.billTotal)
     }
 }
 
