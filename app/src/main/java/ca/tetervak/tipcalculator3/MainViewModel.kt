@@ -69,6 +69,6 @@ class MainViewModel: ViewModel() {
         _calculatorUiState.value = newUiState
     }
 
-    private fun billBeforeTip(serviceCost: String) =
+    private fun billBeforeTip(serviceCost: String): Double =
         serviceCost.toDoubleOrNull() ?: 0.0
 }
