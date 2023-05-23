@@ -1,21 +1,15 @@
 package ca.tetervak.tipcalculator3.model
 
 fun calculateTip(
-    serviceCost: Double,
+    billBeforeTip: Double,
     serviceQuality: ServiceQuality = ServiceQuality.OK,
     roundUpTip: Boolean = true
-): CalculatorUiState {
-    var tipAmount = serviceCost * tipPercentage(serviceQuality)
+): Double {
+    var tipAmount = billBeforeTip * tipPercentage(serviceQuality)
     if (roundUpTip) {
         tipAmount = kotlin.math.ceil(tipAmount)
     }
-    return CalculatorUiState(
-        serviceCost = serviceCost,
-        serviceQuality = serviceQuality,
-        roundUpTip = roundUpTip,
-        tipAmount = tipAmount,
-        billTotal = serviceCost + tipAmount
-    )
+    return tipAmount
 }
 
 private fun tipPercentage(serviceQuality: ServiceQuality): Double =
