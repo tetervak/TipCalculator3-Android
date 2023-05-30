@@ -66,7 +66,7 @@ fun CalculatorScreen() {
 
     val viewModel: MainViewModel = viewModel()
 
-    val uiState: CalculatorUiState by viewModel.calculatorUiState
+    val uiState: CalculatorUiState by viewModel.uiState
 
     Column(
         modifier = Modifier

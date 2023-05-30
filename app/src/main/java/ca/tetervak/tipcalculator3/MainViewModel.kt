@@ -9,20 +9,14 @@ import ca.tetervak.tipcalculator3.model.calculateTip
 
 class MainViewModel: ViewModel() {
 
-    private val _calculatorUiState: MutableState<CalculatorUiState> =
+    private val _uiState: MutableState<CalculatorUiState> =
         mutableStateOf(
-            CalculatorUiState(
-                serviceCost = "",
-                serviceQuality = ServiceQuality.GOOD,
-                roundUpTip = true,
-                tipAmount = 0.0,
-                billTotal = 0.0
-            )
+            CalculatorUiState()
         )
-    val calculatorUiState: State<CalculatorUiState> = _calculatorUiState
+    val uiState: State<CalculatorUiState> = _uiState
 
     fun updateServiceCost(serviceCost: String){
-        val uiState = calculatorUiState.value
+        val uiState = uiState.value
         val billBeforeTip = billBeforeTip(serviceCost)
         val tipAmount = calculateTip(
             billBeforeTip = billBeforeTip,
@@ -34,11 +28,11 @@ class MainViewModel: ViewModel() {
             tipAmount = tipAmount,
             billTotal = billBeforeTip + tipAmount
         )
-        _calculatorUiState.value = newUiState
+        _uiState.value = newUiState
     }
 
     fun updateServiceQuality(serviceQuality: ServiceQuality){
-        val uiState = calculatorUiState.value
+        val uiState = uiState.value
         val billBeforeTip = billBeforeTip(uiState.serviceCost)
         val tipAmount = calculateTip(
             billBeforeTip = billBeforeTip,
@@ -50,11 +44,11 @@ class MainViewModel: ViewModel() {
             tipAmount = tipAmount,
             billTotal = billBeforeTip + tipAmount
         )
-        _calculatorUiState.value = newUiState
+        _uiState.value = newUiState
     }
 
     fun updateRoundUpTip(roundUpTip: Boolean){
-        val uiState = calculatorUiState.value
+        val uiState = uiState.value
         val billBeforeTip = billBeforeTip(uiState.serviceCost)
         val tipAmount = calculateTip(
             billBeforeTip = billBeforeTip,
@@ -66,7 +60,7 @@ class MainViewModel: ViewModel() {
             tipAmount = tipAmount,
             billTotal = billBeforeTip + tipAmount
         )
-        _calculatorUiState.value = newUiState
+        _uiState.value = newUiState
     }
 
     private fun billBeforeTip(serviceCost: String): Double =
