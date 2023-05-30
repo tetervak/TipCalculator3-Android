@@ -23,6 +23,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,7 +67,7 @@ fun CalculatorScreen() {
 
     val viewModel: MainViewModel = viewModel()
 
-    val uiState: CalculatorUiState by viewModel.calculatorUiState
+    val uiState: CalculatorUiState by viewModel.uiStateFlow.collectAsState()
 
     Column(
         modifier = Modifier

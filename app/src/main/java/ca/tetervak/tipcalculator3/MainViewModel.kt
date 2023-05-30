@@ -1,16 +1,16 @@
 package ca.tetervak.tipcalculator3
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ca.tetervak.tipcalculator3.model.ServiceQuality
 import ca.tetervak.tipcalculator3.model.calculateTip
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class MainViewModel: ViewModel() {
 
-    private val _calculatorUiState: MutableState<CalculatorUiState> =
-        mutableStateOf(
+    private val _uiStateFlow: MutableStateFlow<CalculatorUiState> =
+        MutableStateFlow(
             CalculatorUiState(
                 serviceCost = "",
                 serviceQuality = ServiceQuality.GOOD,
@@ -19,54 +19,54 @@ class MainViewModel: ViewModel() {
                 billTotal = 0.0
             )
         )
-    val calculatorUiState: State<CalculatorUiState> = _calculatorUiState
+    val uiStateFlow: StateFlow<CalculatorUiState> = _uiStateFlow
 
     fun updateServiceCost(serviceCost: String){
-        val uiState = calculatorUiState.value
         val billBeforeTip = billBeforeTip(serviceCost)
-        val tipAmount = calculateTip(
-            billBeforeTip = billBeforeTip,
-            serviceQuality = uiState.serviceQuality,
-            roundUpTip = uiState.roundUpTip
-        )
-        val newUiState = uiState.copy(
-            serviceCost = serviceCost,
-            tipAmount = tipAmount,
-            billTotal = billBeforeTip + tipAmount
-        )
-        _calculatorUiState.value = newUiState
+        _uiStateFlow.update { uiState ->
+            val tipAmount = calculateTip(
+                billBeforeTip = billBeforeTip,
+                serviceQuality = uiState.serviceQuality,
+                roundUpTip = uiState.roundUpTip
+            )
+            uiState.copy(
+                serviceCost = serviceCost,
+                tipAmount = tipAmount,
+                billTotal = billBeforeTip + tipAmount
+            )
+        }
     }
 
     fun updateServiceQuality(serviceQuality: ServiceQuality){
-        val uiState = calculatorUiState.value
-        val billBeforeTip = billBeforeTip(uiState.serviceCost)
-        val tipAmount = calculateTip(
-            billBeforeTip = billBeforeTip,
-            serviceQuality = serviceQuality,
-            roundUpTip = uiState.roundUpTip
-        )
-        val newUiState = uiState.copy(
-            serviceQuality = serviceQuality,
-            tipAmount = tipAmount,
-            billTotal = billBeforeTip + tipAmount
-        )
-        _calculatorUiState.value = newUiState
+        _uiStateFlow.update { uiState ->
+            val billBeforeTip = billBeforeTip(uiState.serviceCost)
+            val tipAmount = calculateTip(
+                billBeforeTip = billBeforeTip,
+                serviceQuality = serviceQuality,
+                roundUpTip = uiState.roundUpTip
+            )
+            uiState.copy(
+                serviceQuality = serviceQuality,
+                tipAmount = tipAmount,
+                billTotal = billBeforeTip + tipAmount
+            )
+        }
     }
 
     fun updateRoundUpTip(roundUpTip: Boolean){
-        val uiState = calculatorUiState.value
-        val billBeforeTip = billBeforeTip(uiState.serviceCost)
-        val tipAmount = calculateTip(
-            billBeforeTip = billBeforeTip,
-            serviceQuality = uiState.serviceQuality,
-            roundUpTip = roundUpTip
-        )
-        val newUiState = uiState.copy(
-            roundUpTip = roundUpTip,
-            tipAmount = tipAmount,
-            billTotal = billBeforeTip + tipAmount
-        )
-        _calculatorUiState.value = newUiState
+        _uiStateFlow.update { uiState ->
+            val billBeforeTip = billBeforeTip(uiState.serviceCost)
+            val tipAmount = calculateTip(
+                billBeforeTip = billBeforeTip,
+                serviceQuality = uiState.serviceQuality,
+                roundUpTip = roundUpTip
+            )
+            uiState.copy(
+                roundUpTip = roundUpTip,
+                tipAmount = tipAmount,
+                billTotal = billBeforeTip + tipAmount
+            )
+        }
     }
 
     private fun billBeforeTip(serviceCost: String): Double =
