@@ -11,13 +11,7 @@ class MainViewModel: ViewModel() {
 
     private val _uiStateFlow: MutableStateFlow<CalculatorUiState> =
         MutableStateFlow(
-            CalculatorUiState(
-                serviceCost = "",
-                serviceQuality = ServiceQuality.GOOD,
-                roundUpTip = true,
-                tipAmount = 0.0,
-                billTotal = 0.0
-            )
+            CalculatorUiState()
         )
     val uiStateFlow: StateFlow<CalculatorUiState> = _uiStateFlow
 
