@@ -85,7 +85,7 @@ fun CalculatorScreen() {
         roundUpTip = roundUpTip.value
     )
 
-    val billTotal = billBeforeTip + tipAmount;
+    val billTotal = billBeforeTip + tipAmount
 
     Column(
         modifier = Modifier.padding(32.dp),
